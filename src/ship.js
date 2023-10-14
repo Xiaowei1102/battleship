@@ -13,11 +13,12 @@ class Ship {
         //unless its labled as v, otherwise, by default it's h
         if (shipOrientation === 'v') {
             for (let i = 0; i < length; i++) {
-                this.shipBody[i][1] += i;
+                //UGH...vertical, meaning: [row++][col]; not the other way round
+                this.shipBody[i][0] += i;
             }
         } else {
             for (let i = 0; i < length; i++) {
-                this.shipBody[i][0] += i;
+                this.shipBody[i][1] += i;
             }
         }
         this.damage = 0;
@@ -26,8 +27,10 @@ class Ship {
         for (let coordinate of this.shipBody) {
             if (coordinate[0] === target[0] && coordinate[1] === target[1]) {
                 this.damage++;
+                return true;
             }
         }
+        return false;
     }
     isSunk() {
         return this.damage === this.length; 
