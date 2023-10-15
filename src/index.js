@@ -44,14 +44,18 @@ let clickCounts = 0;
 let currentShip = new Ship(0, []);
 const button = document.querySelector("button");
 button.addEventListener('click', (e) => {
+    const hint = document.querySelector('.hint');
     if (clickCounts === 5) {
         myShips.push(currentShip);
         //make a shallow copy of currentShip
         you.board.myShips = myShips;
         e.target.innerHTML = "Start your game!"
         e.target.disabled = true;
+        hint.innerHTML = 'Your turn: Hit the computer board';
+        clickCounts++; //final clickcounts should be at 6 after all ships added
         return;
     }
+    hint.innerHTML = `Click on your own board to place battleship and finish by clicking the button above to add ship ${clickCounts + 1}`;
     if (clickCounts > 0 && clickCounts < 5) {
         myShips.push(currentShip);
         currentShip = new Ship(0, []);
@@ -61,9 +65,17 @@ button.addEventListener('click', (e) => {
 })
 
 const yourGrids = document.querySelectorAll(".col.you");
-console.log(yourGrids);
+//console.log(yourGrids);
 yourGrids.forEach((yourGrid) => {
     yourGrid.addEventListener('click', (e)=> {
+        if (clickCounts === 0) {
+            document.querySelector('.hint').innerHTML = 'Please click the button first to add ship';
+            return;
+        }
+        //if 5 ships have been added, you can not click your own board anymore
+        if (clickCounts === 6) {
+            return;
+        }
         const row = parseInt(e.target.className.slice(1, 2));
         const col = parseInt(e.target.className.slice(2, 3));
         currentShip.shipBody.push([row, col]);
@@ -114,6 +126,7 @@ enemyGrids.forEach( (enemyGrid) => {
         }
         //now, we need to see if this is a hit or miss and update the board
         computer.board.receiveAttack([row, col]);
+        console.log(computer.board.board);
         checkAfterAttack(e.target, computer, [row, col]);
         if (computer.board.allSunk) {
             document.querySelector('.result').innerHTML = 'You win!';

@@ -29,7 +29,7 @@ class Player {
     generateCoord(enemyBoard) {
         let row = Math.floor(Math.random() * enemyBoard.row);
         let col = Math.floor(Math.random() * enemyBoard.col);
-        while (enemyBoard.board[row][col] === "M" || enemyBoard.board[row][col] < 0) {
+        while (enemyBoard.board[row][col] === "M" || (typeof enemyBoard.board[row][col] === "number" && enemyBoard.board[row][col] < 0)) {
             row = Math.floor(Math.random() * enemyBoard.row);
             col = Math.floor(Math.random() * enemyBoard.col);
         }
