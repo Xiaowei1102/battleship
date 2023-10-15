@@ -4,7 +4,9 @@ import { Gameboard } from './gameboard';
 import { Player } from './player';
 
 const you = new Player(10, 10);
+you.generateFiveShips();
 const computer = new Player(10, 10);
+computer.generateFiveShips();
 
 //paint gameboard for each player
 function paintBoard(player, whoseBoard) {
