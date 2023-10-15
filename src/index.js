@@ -4,11 +4,6 @@ import { Gameboard } from './gameboard';
 import { Player } from './player';
 import { asyncTimeout } from './timeout';
 
-const you = new Player(10, 10);
-you.generateFiveShips();
-const computer = new Player(10, 10);
-computer.generateFiveShips();
-
 //paint gameboard for each player
 function paintBoard(player, whoseBoard) {
     const board = document.querySelector(`.${whoseBoard}.board`);
@@ -35,8 +30,53 @@ function paintBoard(player, whoseBoard) {
     }
 }
 
+const you = new Player(10, 10);
+//you.generateFiveShips();
+const computer = new Player(10, 10);
+computer.generateFiveShips();
+//need to paint the grid first before adding ships
 paintBoard(you, 'you');
 paintBoard(computer, 'computer');
+
+//add your own ships from the grid:
+const myShips = [];
+let clickCounts = 0;
+let currentShip = new Ship(0, []);
+const button = document.querySelector("button");
+button.addEventListener('click', (e) => {
+    if (clickCounts === 5) {
+        myShips.push(currentShip);
+        //make a shallow copy of currentShip
+        you.board.myShips = myShips;
+        e.target.innerHTML = "Start your game!"
+        e.target.disabled = true;
+        return;
+    }
+    if (clickCounts > 0 && clickCounts < 5) {
+        myShips.push(currentShip);
+        currentShip = new Ship(0, []);
+    }
+    e.target.innerHTML = `Ship ${clickCounts + 1}`;
+    clickCounts++;
+})
+
+const yourGrids = document.querySelectorAll(".col.you");
+console.log(yourGrids);
+yourGrids.forEach((yourGrid) => {
+    yourGrid.addEventListener('click', (e)=> {
+        const row = parseInt(e.target.className.slice(1, 2));
+        const col = parseInt(e.target.className.slice(2, 3));
+        currentShip.shipBody.push([row, col]);
+        currentShip.length++;
+        you.board.board[row][col] = clickCounts;
+        e.target.innerHTML = clickCounts;
+    })
+})
+
+
+
+
+
 
 function checkAfterAttack(element, player, coordinates) {
     //if it's a hit, mark as X and add 'hit' class to element 
@@ -53,7 +93,7 @@ function checkAfterAttack(element, player, coordinates) {
 }
 
 
-
+//this is the main game loop
 const enemyGrids = document.querySelectorAll(".col.computer");
 enemyGrids.forEach( (enemyGrid) => {
     enemyGrid.addEventListener ('click', async (e) => {
@@ -91,7 +131,7 @@ enemyGrids.forEach( (enemyGrid) => {
         if (you.board.allSunk) {
             document.querySelector('.result').innerHTML = 'You lose!';
         }
-        await asyncTimeout(2000);
+        await asyncTimeout(1000);
         //change hint
         hint.innerHTML = "The computer finished. It is your turn!";
     })
