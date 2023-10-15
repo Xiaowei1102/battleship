@@ -9,7 +9,7 @@ class Player {
         this.board.placeShip(3, [3, 4], 'v');
         this.board.placeShip(2, [5, 5]);
         this.board.placeShip(5, [8, 3]);
-        this.board.placeShip(4, [9, 3], 'v');
+        this.board.placeShip(4, [3, 9], 'v');
     }
     attack(enemyBoard, coordinate) {
         enemyBoard.receiveAttack(coordinate);

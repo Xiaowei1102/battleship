@@ -1,0 +1,21 @@
+.board {
+    display: flex;
+    
+    flex-direction: column;
+    
+}
+
+.row {
+    display: flex;
+    
+}
+
+.col {
+    background-color: yellow;
+    border: 2px solid black; 
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

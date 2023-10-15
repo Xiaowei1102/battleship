@@ -13,9 +13,10 @@ class Gameboard {
     }
     placeShip(length, headCoord, shipOrientation) {
         //this ship can not over lap with other ships
+        //this ship can not extend outside boundary
         const ship = new Ship(length, headCoord, shipOrientation);
         for (let coord of ship.shipBody) {
-            if(this.board[coord[0]][coord[1]] === "S") {
+            if(coord[0] >= this.row || coord[1] >= this.col || this.board[coord[0]][coord[1]] === "S") {
                 return;
             }
         }
