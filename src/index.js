@@ -2,6 +2,7 @@ import './style.css';
 import { Ship } from './ship';
 import { Gameboard } from './gameboard';
 import { Player } from './player';
+import { asyncTimeout } from './timeout';
 
 const you = new Player(10, 10);
 you.generateFiveShips();
@@ -10,8 +11,6 @@ computer.generateFiveShips();
 
 //paint gameboard for each player
 function paintBoard(player, whoseBoard) {
-    if (whoseBoard === 'you') {
-    }
     const board = document.querySelector(`.${whoseBoard}.board`);
     for (let i = 0; i < player.board.row; i++) {
         const rowElements = document.createElement('div');
@@ -57,8 +56,16 @@ function checkAfterAttack(element, player, coordinates) {
 
 const enemyGrids = document.querySelectorAll(".col.computer");
 enemyGrids.forEach( (enemyGrid) => {
-    enemyGrid.addEventListener ('click', (e) => {
-        
+    enemyGrid.addEventListener ('click', async (e) => {
+        //if the game is over, you can not continue
+        if (document.querySelector('.result').innerHTML !== "") {
+            return;
+        }
+        //wait for 1s
+        await asyncTimeout(1000);
+        //change hint
+        const hint = document.querySelector('.hint');
+        hint.innerHTML = 'You hit the computer board!';
         const row = parseInt(e.target.className.slice(1, 2));
         const col = parseInt(e.target.className.slice(2, 3));
         //if you clicked a spot that has been clicked before, you need to click again
@@ -71,6 +78,11 @@ enemyGrids.forEach( (enemyGrid) => {
         if (computer.board.allSunk) {
             document.querySelector('.result').innerHTML = 'You win!';
         }
+        //wait for 1s
+        await asyncTimeout(1000);
+        //change hint
+        hint.innerHTML = "It is computer's turn to hit your board!";
+        await asyncTimeout(1000);
         //assume the game is still on; now is computer's turn
         const computerHitTarget = computer.generateCoord(you.board);
         you.board.receiveAttack(computerHitTarget);
@@ -79,5 +91,8 @@ enemyGrids.forEach( (enemyGrid) => {
         if (you.board.allSunk) {
             document.querySelector('.result').innerHTML = 'You lose!';
         }
+        await asyncTimeout(2000);
+        //change hint
+        hint.innerHTML = "The computer finished. It is your turn!";
     })
 })

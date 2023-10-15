@@ -10,6 +10,7 @@ body{
 
 .result {
     height: 100px;
+    font-size: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,6 +20,14 @@ body{
     display: flex;
     justify-content: center;
     gap: 100px
+}
+
+.hint {
+    height: 100px;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .board {
     display: flex;
@@ -40,6 +49,8 @@ body{
 }
 
 .col {
+    font-size: 30px;
+    font-weight: bold;
     background-color: yellow;
     border: 2px solid black; 
     width: 40px;
@@ -58,4 +69,8 @@ body{
     font-size: 30px;
     font-weight: bold;
     color: red;
+}
+
+.col.computer:hover {
+    background-color: aqua;
 }
