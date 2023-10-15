@@ -2,11 +2,36 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.board-container {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.result {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.two-boards {
+    display: flex;
+    justify-content: center;
+    gap: 100px
+}
 .board {
     display: flex;
     
     flex-direction: column;
     
+}
+
+.title {
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .row {
